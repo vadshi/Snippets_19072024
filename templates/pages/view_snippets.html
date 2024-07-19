@@ -34,9 +34,14 @@
                     {% for snippet in snippets  %}
                         <tr>
                             <td scope="row"> {{ snippet.id }} </td>
-                            <td><a href="/snippets/{{ snippet.id }}">{{ snippet.name }}</a></td>
+                            <td><a href="{% url "snippet-detail" snippet.id %}">{{ snippet.name }}</a></td>
                             <td>{{ snippet.lang }} </td>
                             <td>{{ snippet.creation_date | date:"Y-m-d H:i:s" }}</td>
+                        </tr>
+
+                    {% empty %}
+                        <tr>
+                            <td colspan="4">Нет доступных сниппетов.</td>
                         </tr>
                     {% endfor %}
                     </tbody>
