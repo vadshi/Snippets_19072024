@@ -12,7 +12,7 @@
         <div class="row">
             <div class="col">
                 <form action="{% url "create-snippet" %}" method="post">
-                    {% comment %} {% csrf_token %} {% endcomment %}
+                    {% csrf_token %}
                     <table>
                         {{ form }}
                     </table>
