@@ -22,8 +22,6 @@ class SnippetForm(ModelForm):
 
         }
 
-
-
     def clean_name(self):
         snippet_name = self.cleaned_data.get("name")
         if snippet_name is not None and len(snippet_name) > 3:
