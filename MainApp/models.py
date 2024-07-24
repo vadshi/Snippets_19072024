@@ -16,4 +16,5 @@ class Snippet(models.Model):
     code = models.TextField(max_length=5000)
     creation_date = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, blank=True, null=True)
+    public = models.BooleanField(default=True)  # True = public, False = private
 
