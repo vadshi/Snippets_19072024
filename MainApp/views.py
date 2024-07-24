@@ -1,8 +1,8 @@
-from django.http import Http404, HttpResponse, HttpResponseNotFound
+from django.http import Http404, HttpResponseNotAllowed
 from django.shortcuts import render, redirect, get_object_or_404
 from MainApp.models import Snippet
 from django.core.exceptions import ObjectDoesNotExist
-from MainApp.forms import SnippetForm
+from MainApp.forms import SnippetForm, UserRegistrationForm
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 
@@ -124,9 +124,26 @@ def login(request):
             return render(request, "pages/index.html", context)
     return redirect('home')
 
-def auth_login(request):
-    return render(request, "pages/login.html")
 
 def logout(request):
     auth.logout(request)
     return redirect('home')
+
+def create_user(request):
+    context = {'pagename': 'Регистрация нового пользователя'}
+    # Создаем пустую форму при запросе GET
+    if request.method == "GET":
+        form = UserRegistrationForm()
+        context["form"] = form
+        return render(request, 'pages/registration.html', context)
+    
+    # Получаем данные из формы и на их основе создаем нового пользователя
+    if request.method == "POST":
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("home")  
+        context["form"] = form
+        return render(request,'pages/registration.html', context)
+    
+    return HttpResponseNotAllowed("bad request method")
