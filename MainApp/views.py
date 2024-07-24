@@ -4,6 +4,7 @@ from MainApp.models import Snippet
 from django.core.exceptions import ObjectDoesNotExist
 from MainApp.forms import SnippetForm
 from django.contrib import auth
+from django.contrib.auth.decorators import login_required
 
 
 def index_page(request):
@@ -11,6 +12,7 @@ def index_page(request):
     return render(request, 'pages/index.html', context)
 
 
+@login_required(login_url="auth-login")
 def add_snippet_page(request):
     # Создаем пустую форму при запросе GET
     if request.method == "GET":
@@ -110,7 +112,8 @@ def login(request):
             return render(request, "pages/index.html", context)
     return redirect('home')
 
-
+def auth_login(request):
+    return render(request, "pages/login.html")
 
 def logout(request):
     auth.logout(request)
