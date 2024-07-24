@@ -1,4 +1,4 @@
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, HttpResponseNotFound
 from django.shortcuts import render, redirect, get_object_or_404
 from MainApp.models import Snippet
 from django.core.exceptions import ObjectDoesNotExist
@@ -64,13 +64,14 @@ def snippet_detail(request, snippet_id):
         context["type"] = "view"
         return render(request, "pages/snippet_detail.html", context)
 
+
 @login_required
 def snippet_edit(request, snippet_id):
     context = {'pagename': 'Просмотр сниппета'}
     try:
         snippet = Snippet.objects.filter(user=request.user).get(id=snippet_id)
     except ObjectDoesNotExist:
-        return Http404
+        raise Http404
     
     # 1 вариант, с помощью SnippetForm
     # if request.method == "GET":
@@ -92,7 +93,7 @@ def snippet_edit(request, snippet_id):
         data_form = request.POST
         snippet.name = data_form["name"]
         snippet.code = data_form["code"]
-        snippet.public = data_form["public"]
+        snippet.public = data_form.get("public", False)
         snippet.save()
         return redirect("snippets-list")
 
