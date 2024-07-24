@@ -11,8 +11,17 @@ def index_page(request):
     context = {'pagename': 'PythonBin'}
     return render(request, 'pages/index.html', context)
 
+@login_required
+def my_snippets(request):
+    snippets = Snippet.objects.filter(user=request.user)
+    context = {
+        'pagename': 'Мои сниппетов',
+        'snippets': snippets,
+        }
+    return render(request, 'pages/view_snippets.html', context)
 
-@login_required(login_url="auth-login")
+
+@login_required(login_url="home")
 def add_snippet_page(request):
     # Создаем пустую форму при запросе GET
     if request.method == "GET":
