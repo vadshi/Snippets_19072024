@@ -11,6 +11,9 @@ LANGS = (
 
 
 class Snippet(models.Model):
+    class Meta:
+        ordering = ['name', 'lang']
+
     name = models.CharField(max_length=100)
     lang = models.CharField(max_length=30, choices=LANGS)
     code = models.TextField(max_length=5000)
@@ -19,7 +22,7 @@ class Snippet(models.Model):
     public = models.BooleanField(default=True)  # True = public, False = private
 
     def __repr__(self) -> str:
-        return f'Snippet({self.name})'
+        return f'Snippet({self.name}, {self.lang})'
 
 
 class Comment(models.Model):
