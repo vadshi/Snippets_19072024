@@ -19,7 +19,7 @@ class Snippet(models.Model):
     public = models.BooleanField(default=True)  # True = public, False = private
 
     def __repr__(self) -> str:
-        return Snippet(f'{self.name}')
+        return f'Snippet({self.name})'
 
 
 class Comment(models.Model):
