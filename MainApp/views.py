@@ -107,11 +107,11 @@ def snippet_delete(request, snippet_id):
 
 
 def login(request):
+    from pprint import pprint
     if request.method == 'POST':
         username = request.POST.get("username")
         password = request.POST.get("password")
-        # print("username =", username)
-        # print("password =", password)
+        # print(request.META.get("REMOTE_ADDR")) # Доступ к META информации WSGIRequest(запроса)
         user = auth.authenticate(request, username=username, password=password)
         if user is not None:
             auth.login(request, user)
