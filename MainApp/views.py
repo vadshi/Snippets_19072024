@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from MainApp.models import Snippet
 from django.core.exceptions import ObjectDoesNotExist
 from MainApp.forms import SnippetForm, UserRegistrationForm, CommentForm
-from django.contrib import auth
+from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 
 
@@ -40,6 +40,7 @@ def add_snippet_page(request):
             if request.user.is_authenticated:
                 snippet.user = request.user 
                 snippet.save()
+                messages.success(request,"New snippet has created!")
             return redirect("snippets-list")  # GET /snippets/list
         return render(request,'pages/add_snippet.html', {'form': form})
 
@@ -97,6 +98,7 @@ def snippet_edit(request, snippet_id):
         snippet.code = data_form["code"]
         snippet.public = data_form.get("public", False)
         snippet.save()
+        messages.success(request,"Changes of snippet have saved!")
         return redirect("snippets-list")
 
 
@@ -117,6 +119,7 @@ def login(request):
         user = auth.authenticate(request, username=username, password=password)
         if user is not None:
             auth.login(request, user)
+            messages.success(request,f"{user.username.capitalize()} logged in!")
         else:
             # Return error message
             context = {
