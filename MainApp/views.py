@@ -98,8 +98,8 @@ def snippet_edit(request, snippet_id):
         snippet.code = data_form["code"]
         snippet.public = data_form.get("public", False)
         snippet.save()
-        messages.success(request,"Changes of snippet have saved!")
-        return redirect("snippets-list")
+        messages.success(request,"Snippet has changed!")
+    return redirect("snippets-list")
 
 
 @login_required
@@ -107,6 +107,7 @@ def snippet_delete(request, snippet_id):
     if request.method == "GET" or request.method == "POST":
         snippet = get_object_or_404(Snippet.objects.filter(user=request.user), id=snippet_id)
         snippet.delete()
+        messages.info(request,"Snippet has deleted!")
     return redirect("snippets-list")
 
 
