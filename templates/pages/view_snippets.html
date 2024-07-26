@@ -50,10 +50,16 @@
                             <td>{{ snippet.lang }} </td>
                             <td>{{ snippet.creation_date | date:"Y-m-d H:i:s" }}</td>
                             <td>
+                                {% if request.user == snippet.user %}
+                                <div style="display: flex; flex-direction: row;">
+                                    <a href="{% url "snippet-edit" snippet.id %}" class="btn btn-primary btn-block">Edit</a>
+                                    &nbsp;&nbsp;
                                 <form action="{% url "snippet-delete" snippet.id %}" method="POST">
                                     {% csrf_token %}
                                     <button type="submit" class="btn btn-danger"> Delete </button>
                                 </form>
+                                </div>
+                                {% endif %}
                             </td>
                             <td> {{ snippet.user.username }} </td>
                             <td>
